@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,6 +13,7 @@ const Signup: React.FC = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -40,7 +41,8 @@ const Signup: React.FC = () => {
       console.log(data);
       setLoading(false);
       toast.success('Sign up successful!');
-      setFormData(initialFormData);  // Reset form fields
+      setFormData(initialFormData); // Reset form fields
+      navigate('/'); // Navigate to the home page after successful sign-up
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
       setLoading(false);
