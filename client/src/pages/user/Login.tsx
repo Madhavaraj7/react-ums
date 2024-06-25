@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { signInStart, signInSuccess, signInFailure } from '../../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 const Login: React.FC = () => {
   const initialFormData = {
     email: '',
     password: '',
   };
-
   const [formData, setFormData] = useState(initialFormData);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state: RootState) => state.user);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -20,9 +22,8 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(false);
-
+    dispatch(signInStart());
+  
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -31,24 +32,35 @@ const Login: React.FC = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (!res.ok) {
-        throw new Error('Network response was not ok');
+        const errorData = await res.json();
+        let errorMessage = 'Something went wrong!';
+  
+        if (res.status === 404) {
+          errorMessage = 'User not found';
+        } else if (res.status === 401) {
+          errorMessage = 'Wrong credentials';
+        } else if (errorData.message) {
+          errorMessage = errorData.message;
+        }
+  
+        throw new Error(errorMessage);
       }
-
+  
       const data = await res.json();
-      console.log(data);
-      setLoading(false);
+      dispatch(signInSuccess(data));
       toast.success('Login successful!');
       setFormData(initialFormData); // Reset form fields
       navigate('/'); // Navigate to the home page after successful login
-    } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
-      setLoading(false);
-      setError(true);
-      toast.error('Something went wrong!');
+    } catch (err) {
+      console.error('There was a problem with the fetch operation:', err);
+      const errorMessage = (err as Error).message;
+      dispatch(signInFailure(errorMessage));
+      toast.error(errorMessage);
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 to-indigo-500">
@@ -98,7 +110,6 @@ const Login: React.FC = () => {
               </Link>
             </span>
           </div>
-          {error && <p className='text-red-700 mt-5'>Something went wrong!</p>}
         </form>
       </div>
       <ToastContainer />
