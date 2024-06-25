@@ -1,23 +1,31 @@
-import React from 'react';
-
 const Home = () => {
-  const cards = [
-    { title: 'Card 1', description: 'This is the description for card 1.' },
-    { title: 'Card 2', description: 'This is the description for card 2.' },
-    { title: 'Card 3', description: 'This is the description for card 3.' },
-  ];
-
   return (
-    <div className="container mx-auto py-10 mt-20"> {/* Added mt-20 for top margin */}
-      <h1 className="text-4xl font-bold text-center mb-8">Home</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {cards.map((card, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-2">{card.title}</h2>
-            <p className="text-gray-700">{card.description}</p>
-          </div>
-        ))}
-      </div>
+    <div className='px-4 py-12 max-w-2xl mx-auto text-center mt-10'>
+      <h1 className='text-4xl font-extrabold mb-6 text-slate-800'>
+        Welcome to U M S!
+      </h1>
+      <p className='mb-6 text-lg text-slate-700 leading-relaxed'>
+        This is a full-stack web application built with the MERN (MongoDB,
+        Express, React, Node.js) stack. It includes authentication features that
+        allow users to sign up, log in, and log out, and provides access to
+        protected routes only for authenticated users.
+      </p>
+      <p className='mb-6 text-lg text-slate-700 leading-relaxed'>
+        The front-end of the application is built with React and uses React
+        Router for client-side routing. The back-end is built with Node.js and
+        Express, and uses MongoDB as the database. Authentication is implemented
+        using JSON Web Tokens (JWT).
+      </p>
+      <p className='mb-6 text-lg text-slate-700 leading-relaxed'>
+        This application is intended as a starting point for building full-stack
+        web applications with authentication using the MERN stack. Feel free to
+        use it as a template for your own projects!
+      </p>
+      <a 
+        href="/sign-up" 
+        className='inline-block bg-slate-700 text-white px-6 py-3 rounded-lg text-lg uppercase font-semibold hover:bg-slate-800 transition duration-300'>
+        Get Started
+      </a>
     </div>
   );
 };

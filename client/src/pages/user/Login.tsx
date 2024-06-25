@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { signInStart, signInSuccess, signInFailure } from '../../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import OAuth from '../../components/OAuth';
 
 const Login: React.FC = () => {
   const initialFormData = {
@@ -107,6 +108,11 @@ const Login: React.FC = () => {
             >
               {loading ? 'Logging In...' : 'Login'}
             </button>
+
+          </div>
+          <br />
+          <div className="flex items-center justify-between">
+            <OAuth /> {/* Place OAuth component here */}
           </div>
           <div className="mt-6 text-center">
             <span className="text-gray-700 text-sm">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import OAuth from '../../components/OAuth'; // Import OAuth component
 
 const Signup: React.FC = () => {
   const initialFormData = {
@@ -95,7 +96,7 @@ const Signup: React.FC = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <button
               className={`bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
               type="submit"
@@ -103,6 +104,9 @@ const Signup: React.FC = () => {
             >
               {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
+          </div>
+          <div className="flex items-center justify-between">
+            <OAuth /> {/* Place OAuth component here */}
           </div>
           <div className="mt-6 text-center">
             <span className="text-gray-700 text-sm">
