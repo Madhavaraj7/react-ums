@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
@@ -7,30 +7,33 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-// Define your Redux state interface
+import { updateUserFailure, updateUserStart, updateUserSuccess } from "../../redux/user/userSlice";
+
 interface User {
+  _id: string;
   profilePicture: string;
   username: string;
   email: string;
-  // Add other fields as needed
 }
 
 interface RootState {
   user: {
     currentUser: User;
-    // Add other user-related state fields as needed
   };
-  // Add other slices of your Redux state as needed
 }
 
 function Profile() {
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [image, setImage] = useState<File | null>(null);
   const [imagePercent, setImagePercent] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState<Partial<User>>({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -49,16 +52,19 @@ function Profile() {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setImagePercent(Math.round(progress));
       },
       (error) => {
         setImageError(true);
+        toast.error("Error uploading image (file size must be less than 2 MB)");
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
-          setFormData((prevFormData) => ({ ...prevFormData, profilePicture: downloadURL }))
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            profilePicture: downloadURL,
+          }))
         );
       }
     );
@@ -70,10 +76,44 @@ function Profile() {
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      setLoading(false);
+      if (data.success === false) {
+        dispatch(updateUserFailure(data));
+        toast.error("Failed to update profile");
+        return;
+      }
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      setLoading(false);
+      dispatch(updateUserFailure(error));
+      toast.error("Error updating profile");
+    }
+  };
+
   return (
     <div className="p-3 max-w-lg mx-auto mt-10">
+      <ToastContainer />
       <h1 className="text-3xl font-semibold text-center my-7">PROFILE</h1>
-      <form className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="file"
           ref={fileRef}
@@ -82,22 +122,22 @@ function Profile() {
           onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
         />
         <img
-          src={formData.profilePicture||currentUser.profilePicture}
+          src={formData.profilePicture || currentUser.profilePicture}
           alt="Profile"
           className="h-24 w-24 self-center cursor-pointer rounded-full object-cover mt-2"
           onClick={handleFileClick}
         />
-         <p className='text-sm self-center'>
+        <p className="text-sm self-center">
           {imageError ? (
-            <span className='text-red-700'>
+            <span className="text-red-700">
               Error uploading image (file size must be less than 2 MB)
             </span>
           ) : imagePercent > 0 && imagePercent < 100 ? (
-            <span className='text-slate-700'>{`Uploading: ${imagePercent} %`}</span>
+            <span className="text-slate-700">{`Uploading: ${imagePercent} %`}</span>
           ) : imagePercent === 100 ? (
-            <span className='text-green-700'>Image uploaded successfully</span>
+            <span className="text-green-700">Image uploaded successfully</span>
           ) : (
-            ''
+            ""
           )}
         </p>
         <input
@@ -106,6 +146,7 @@ function Profile() {
           id="username"
           placeholder="Username"
           className="bg-slate-100 rounded-lg p-3"
+          onChange={handleChange}
         />
         <input
           defaultValue={currentUser.email}
@@ -113,15 +154,20 @@ function Profile() {
           id="email"
           placeholder="Email"
           className="bg-slate-100 rounded-lg p-3"
+          onChange={handleChange}
         />
         <input
           type="password"
           id="password"
           placeholder="Password"
           className="bg-slate-100 rounded-lg p-3"
+          onChange={handleChange}
         />
-        <button className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
-          Update
+        <button
+          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+          disabled={loading}
+        >
+          {loading ? "Updating..." : "Update"}
         </button>
       </form>
       <div className="flex justify-between mt-4">
