@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom"
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Header() {
   return (
-    <div className='bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg'>
-      <div className='flex justify-between items-center max-w-6xl mx-auto p-4'>
+    <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg z-50">
+      <div className="flex justify-between items-center max-w-6xl mx-auto p-4">
         <Link to='/' className='text-white'>
           <h1 className='font-bold text-3xl'>U M S</h1>
         </Link>
@@ -26,7 +27,7 @@ function Header() {
         </ul>
       </div>
     </div>
-  )
+  );
 }
 
-export default Header
+export default Header;
