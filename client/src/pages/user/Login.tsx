@@ -51,8 +51,13 @@ const Login: React.FC = () => {
       const data = await res.json();
       dispatch(signInSuccess(data));
       toast.success('Login successful!');
-      setFormData(initialFormData); // Reset form fields
-      navigate('/'); // Navigate to the home page after successful login
+  
+      // Delay navigation after showing toast
+      setTimeout(() => {
+        setFormData(initialFormData); // Reset form fields
+        navigate('/'); // Navigate to the home page after timeout
+      }, 3000); // Adjust delay time as needed
+  
     } catch (err) {
       console.error('There was a problem with the fetch operation:', err);
       const errorMessage = (err as Error).message;
@@ -60,6 +65,7 @@ const Login: React.FC = () => {
       toast.error(errorMessage);
     }
   };
+  
   
 
   return (
