@@ -20,7 +20,7 @@ function Header() {
   const dispatch = useDispatch();
 
   // Hide links on specific routes
-  const hideLinks = ['/admin-login', '/', '/login', '/sign-up', '/admin-dashboard'].includes(location.pathname);
+  const hideLinks = ['/admin-login', '/', '/login', '/sign-up', '/admin-dashboard','/admin/add-user'].includes(location.pathname);
 
   const handleSignOut = async () => {
     try {

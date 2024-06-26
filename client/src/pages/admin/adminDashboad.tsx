@@ -13,6 +13,7 @@ type User = {
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const admin = useSelector((state: RootState) => state.admin);
   const navigate = useNavigate();
 
@@ -45,8 +46,17 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredUsers = users.filter(user =>
+    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="min-h-screen bg-gray-100  mt-16">
+    <div className="min-h-screen bg-gray-100 mt-16">
       <div className="flex flex-col items-center mt-15">
         <div className="relative overflow-x-auto w-[80%] bg-white shadow-md rounded-lg p-6 mt-4">
           <div className="flex justify-between items-center my-4">
@@ -58,6 +68,15 @@ const AdminDashboard = () => {
               Add User
             </button>
           </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              placeholder="Search by username or email"
+              className="p-2 border border-gray-300 rounded w-full"
+            />
+          </div>
           <table className="w-full text-sm text-left text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
@@ -68,7 +87,7 @@ const AdminDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <tr key={user._id} className="bg-white border-b hover:bg-gray-50">
                   <td className="px-6 py-4">{user.username}</td>
                   <td className="px-6 py-4">{user.email}</td>

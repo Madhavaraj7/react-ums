@@ -9,7 +9,7 @@ import PrivateRoute from "./components/PrivateRouter";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/adminDashboad";
 import AdminPrivateRoute from "./components/ProtectedAdminRoute";
-
+import AddUser from "./pages/admin/Adduser";
 function App() {
   return (
     <BrowserRouter>
@@ -28,6 +28,12 @@ function App() {
         <Route element={<AdminPrivateRoute />}>
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Route>
+        <Route path="/admin/add-user" element={<AddUser />} />
+
+       
+      
+
+
       </Routes>
     </BrowserRouter>
   );
