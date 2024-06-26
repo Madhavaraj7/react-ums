@@ -55,7 +55,7 @@ function Profile() {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setImagePercent(Math.round(progress));
       },
-      (error) => {
+      (_error) => {
         setImageError(true);
         toast.error("Error uploading image (file size must be less than 2 MB)");
       },
@@ -80,7 +80,7 @@ function Profile() {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -92,13 +92,16 @@ function Profile() {
         },
         body: JSON.stringify(formData),
       });
+  
       const data = await res.json();
       setLoading(false);
-      if (data.success === false) {
+  
+      if (!res.ok) {
         dispatch(updateUserFailure(data));
-        toast.error("Failed to update profile");
+        toast.error(data.message || "Failed to update profile");
         return;
       }
+  
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
       toast.success("Profile updated successfully");
@@ -108,6 +111,7 @@ function Profile() {
       toast.error("Error updating profile");
     }
   };
+  
 
   return (
     <div className="p-3 max-w-lg mx-auto mt-10">
@@ -174,6 +178,9 @@ function Profile() {
         <span className="text-red-700 cursor-pointer">Delete Account</span>
         <span className="text-red-700 cursor-pointer">Sign Out</span>
       </div>
+      <p className='text-green-700 mt-5'>
+        {updateSuccess && 'User is updated successfully!'}
+      </p>
     </div>
   );
 }
