@@ -52,7 +52,7 @@ const Signup: React.FC = () => {
       const data = await res.json();
       console.log(data);
       toast.success('Sign up successful!');
-      navigate('/'); // Navigate to the home page after successful sign-up
+      navigate('/login'); // Navigate to the home page after successful sign-up
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
       toast.error('Something went wrong!');
