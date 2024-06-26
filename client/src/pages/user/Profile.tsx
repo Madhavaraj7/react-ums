@@ -10,7 +10,7 @@ import { app } from "../../firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { updateUserFailure, updateUserStart, updateUserSuccess } from "../../redux/user/userSlice";
+import { signOut, updateUserFailure, updateUserStart, updateUserSuccess } from "../../redux/user/userSlice";
 
 interface User {
   _id: string;
@@ -111,6 +111,15 @@ function Profile() {
       toast.error("Error updating profile");
     }
   };
+
+  const handleSignOut = async () => {
+    try {
+      await fetch('/api/auth/signout');
+      dispatch(signOut())
+    } catch (error) {
+      console.log(error);
+    }
+  };
   
 
   return (
@@ -176,11 +185,9 @@ function Profile() {
       </form>
       <div className="flex justify-between mt-4">
         <span className="text-red-700 cursor-pointer">Delete Account</span>
-        <span className="text-red-700 cursor-pointer">Sign Out</span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">Sign Out</span>
       </div>
-      <p className='text-green-700 mt-5'>
-        {updateSuccess && 'User is updated successfully!'}
-      </p>
+      
     </div>
   );
 }
