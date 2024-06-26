@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { signOut } from '../redux/admin/adminSlice';
 
 // Define your Redux state interface
 interface RootState {
@@ -16,8 +17,19 @@ interface RootState {
 function Header() {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const location = useLocation();
+  const dispatch = useDispatch();
 
-  const hideLinks = ['/admin-login', '/admin-dashboard'].includes(location.pathname);
+  // Hide links on specific routes
+  const hideLinks = ['/admin-login', '/', '/login', '/sign-up', '/admin-dashboard'].includes(location.pathname);
+
+  const handleSignOut = async () => {
+    try {
+      await fetch('/api/auth/signout');
+      dispatch(signOut());
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="fixed top-0 left-0 right-0 bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg z-50">
@@ -28,7 +40,7 @@ function Header() {
         {!hideLinks && (
           <ul className='flex gap-6'>
             <li>
-              <Link to='/' className='text-white text-lg hover:text-indigo-300 transition duration-300'>
+              <Link to='/home' className='text-white text-lg hover:text-indigo-300 transition duration-300'>
                 Home
               </Link>
             </li>
@@ -47,6 +59,14 @@ function Header() {
               </Link>
             </li>
           </ul>
+        )}
+        {location.pathname === '/admin-dashboard' && (
+          <button
+            onClick={handleSignOut}
+            className="text-white text-lg bg-red-500 hover:bg-red-700 transition duration-300 py-1 px-4 rounded"
+          >
+            Logout
+          </button>
         )}
       </div>
     </div>

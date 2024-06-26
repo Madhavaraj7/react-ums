@@ -68,7 +68,7 @@ const Login: React.FC = () => {
   
       // Delay navigation after showing toast
       setTimeout(() => {
-        navigate('/'); // Navigate to the home page after timeout
+        navigate('/home'); // Navigate to the home page after timeout
       }, 3000); // Adjust delay time as needed
   
     } catch (err) {

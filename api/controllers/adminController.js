@@ -58,3 +58,7 @@ const getAllUsersController = async (req, res) => {
 export { getAllUsersController };
 
 
+
+export const signout = (req, res) => {
+  res.clearCookie('access_token').status(200).json('Signout success!');
+};
