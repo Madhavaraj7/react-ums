@@ -16,16 +16,12 @@ const Home = () => {
         Express, and uses MongoDB as the database. Authentication is implemented
         using JSON Web Tokens (JWT).
       </p>
-      <p className='mb-6 text-lg text-slate-700 leading-relaxed'>
-        This application is intended as a starting point for building full-stack
-        web applications with authentication using the MERN stack. Feel free to
-        use it as a template for your own projects!
-      </p>
-      <a 
+     
+      {/* <a 
         href="/sign-up" 
         className='inline-block bg-slate-700 text-white px-6 py-3 rounded-lg text-lg uppercase font-semibold hover:bg-slate-800 transition duration-300'>
         Get Started
-      </a>
+      </a> */}
     </div>
   );
 };

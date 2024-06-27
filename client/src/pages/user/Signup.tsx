@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Formik, Field, Form, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import OAuth from '../../components/OAuth'; // Import OAuth component
+// import OAuth from '../../components/OAuth'; // Import OAuth component
 
 interface FormValues {
   username: string;
@@ -120,7 +120,7 @@ const Signup: React.FC = () => {
                 </button>
               </div>
               <div className="flex items-center justify-between">
-                <OAuth /> {/* Place OAuth component here */}
+                {/* <OAuth /> Place OAuth component here */}
               </div>
               <div className="mt-6 text-center">
                 <span className="text-gray-700 text-sm">

@@ -10,6 +10,7 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/adminDashboad";
 import AdminPrivateRoute from "./components/ProtectedAdminRoute";
 import AddUser from "./pages/admin/Adduser";
+import EditUser from "./pages/admin/EditUser";
 function App() {
   return (
     <BrowserRouter>
@@ -29,6 +30,8 @@ function App() {
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Route>
         <Route path="/admin/add-user" element={<AddUser />} />
+        <Route path="/admin/edit-user/:id" element={<EditUser />} />
+
 
        
       

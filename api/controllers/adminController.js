@@ -77,6 +77,51 @@ export const deleteUserController = async (req, res) => {
 };
 
 
+export const getUserDetailsController = async (req, res) => {
+  console.log("hello");
+  try {
+    const users = await User.find({ is_verified: { $ne: 1 } }).select("username email profilePicture").exec();
+
+    console.log(users);
+
+    res.status(200).json({
+      users: users,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+export const editUserDetailsController = async (req, res, next) => {
+  try {
+    const updateFields = {
+      username: req.body.username,
+      email: req.body.email,
+    };
+
+    if (req.body.password) {
+      updateFields.password = bcrypt.hashSync(req.body.password, 10);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: updateFields },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    const { password, ...rest } = updatedUser._doc;
+    res.status(200).json({ success: true, ...rest });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 
 
 export const signout = (req, res) => {

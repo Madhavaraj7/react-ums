@@ -52,6 +52,10 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleEdit = (user: User) => {
+    navigate(`/admin/edit-user/${user._id}`, { state: { user } });
+  };
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
@@ -108,7 +112,7 @@ const AdminDashboard = () => {
                   <td className="px-6 py-4 flex space-x-3">
                     <button
                       className="bg-yellow-500 hover:bg-yellow-600 p-2 text-white rounded flex items-center"
-                      onClick={() => navigate(`/admin/edit-user/${user._id}`)}
+                      onClick={() => handleEdit(user)}
                     >
                       <FaEdit className="mr-2" /> Edit
                     </button>

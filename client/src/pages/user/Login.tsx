@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { Formik, Field, Form, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import OAuth from '../../components/OAuth';
+// import OAuth from '../../components/OAuth';
 
 interface FormValues {
   email: string;
@@ -128,7 +128,7 @@ const Login: React.FC = () => {
               </div>
               <br />
               <div className="flex items-center justify-between">
-                <OAuth /> {/* Place OAuth component here */}
+                {/* <OAuth /> Place OAuth component here */}
               </div>
               <div className="mt-6 text-center">
                 <span className="text-gray-700 text-sm">
