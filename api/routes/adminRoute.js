@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllUsersController, login, signout } from '../controllers/adminController.js';
+import { deleteUserController, getAllUsersController, login, signout } from '../controllers/adminController.js';
 import { signup } from '../controllers/authController.js';
 
 
@@ -9,6 +9,8 @@ router.post("/admin-login",login);
 router.get("/get-users",getAllUsersController);
 router.get('/signout', signout);
 router.post("/add-user", signup);
+router.delete("/delete-user/:id",deleteUserController);
+
 
 
 

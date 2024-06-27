@@ -57,6 +57,26 @@ const getAllUsersController = async (req, res) => {
 
 export { getAllUsersController };
 
+export const deleteUserController = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await User.findByIdAndDelete(id);
+
+    return res.status(200).send({
+      success: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "User deletion failed",
+    });
+  }
+};
+
+
 
 
 export const signout = (req, res) => {

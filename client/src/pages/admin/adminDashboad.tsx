@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 type User = {
   _id: string;
@@ -35,14 +37,18 @@ const AdminDashboard = () => {
   }, [getAllUsers]);
 
   const handleDelete = async (userId: string) => {
-    try {
-      const response = await fetch(`/api/admin/delete-user/${userId}`, { method: 'DELETE' });
-      if (!response.ok) {
-        throw new Error("Failed to delete user");
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      try {
+        const response = await fetch(`/api/admin/delete-user/${userId}`, { method: 'DELETE' });
+        if (!response.ok) {
+          throw new Error("Failed to delete user");
+        }
+        setUsers(users.filter(user => user._id !== userId));
+        toast.success("User deleted successfully!");
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to delete user.");
       }
-      setUsers(users.filter(user => user._id !== userId));
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -57,6 +63,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 mt-16">
+      <ToastContainer />
       <div className="flex flex-col items-center mt-15">
         <div className="relative overflow-x-auto w-[80%] bg-white shadow-md rounded-lg p-6 mt-4">
           <div className="flex justify-between items-center my-4">
