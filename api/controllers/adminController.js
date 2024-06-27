@@ -19,14 +19,14 @@ export const login = async (req, res, next) => {
       return next(errorHandler(401, 'Wrong credentials'));
     }
 
-    // Check if the user is verified
+  
     if (validUser.is_verified !== 1) {
       return next(errorHandler(403, 'User is not verified'));
     }
 
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
     const { password: hashedPassword, ...rest } = validUser._doc;
-    const expiryDate = new Date(Date.now() + 3600000); // 1 hour from now
+    const expiryDate = new Date(Date.now() + 3600000); 
 
     res.cookie('access_token', token, {
       httpOnly: true,
