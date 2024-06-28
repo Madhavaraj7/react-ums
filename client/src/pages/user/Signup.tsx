@@ -13,7 +13,7 @@ interface FormValues {
 }
 
 const Signup: React.FC = () => {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate(); 
 
   const initialValues: FormValues = {
     username: '',
@@ -25,7 +25,7 @@ const Signup: React.FC = () => {
     username: Yup.string()
       .min(3, 'Username must be at least 3 characters')
       .max(15, 'Username must be 15 characters or less')
-      .matches(/^\S*$/, 'No spaces allowed in the username') // Custom validation to disallow spaces
+      .matches(/^\S*$/, 'No spaces allowed in the username') 
       .required('Username is required'),
     email: Yup.string()
       .email('Invalid email address')
@@ -52,7 +52,7 @@ const Signup: React.FC = () => {
       const data = await res.json();
       console.log(data);
       toast.success('Sign up successful!');
-      navigate('/login'); // Navigate to the home page after successful sign-up
+      navigate('/login'); 
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
       toast.error('Something went wrong!');
@@ -120,7 +120,7 @@ const Signup: React.FC = () => {
                 </button>
               </div>
               <div className="flex items-center justify-between">
-                {/* <OAuth /> Place OAuth component here */}
+                {/* <OAuth /> */}
               </div>
               <div className="mt-6 text-center">
                 <span className="text-gray-700 text-sm">
