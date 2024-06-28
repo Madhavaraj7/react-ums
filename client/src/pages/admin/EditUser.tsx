@@ -25,7 +25,7 @@ const EditUser = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, email }),
-        credentials: 'include',  // Add this line
+        credentials: 'include',  
       });
       const data = await response.json();
   

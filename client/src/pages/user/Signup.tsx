@@ -55,7 +55,7 @@ const Signup: React.FC = () => {
       navigate('/login'); 
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
-      toast.error('Something went wrong!');
+      toast.error('user already exists!');
     }
     setSubmitting(false);
   };

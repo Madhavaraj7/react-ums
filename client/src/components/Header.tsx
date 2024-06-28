@@ -20,7 +20,8 @@ function Header() {
   const dispatch = useDispatch();
 
   // Hide links on specific routes
-  const hideLinks = ['/admin-login', '/', '/login', '/sign-up', '/admin-dashboard','/admin/add-user','/admin/edit-user/:id'].includes(location.pathname);
+  const hideLinks = ['/admin-login', '/', '/login', '/sign-up', '/admin-dashboard', '/admin/add-user'].includes(location.pathname) 
+                    || location.pathname.startsWith('/admin/edit-user');
 
   const handleSignOut = async () => {
     try {
@@ -74,14 +75,3 @@ function Header() {
 }
 
 export default Header;
-
-// Example of using Header in another component:
-// import Header from './Header';
-// function App() {
-//   return (
-//     <div>
-//       <Header />
-//       {/* Other components */}
-//     </div>
-//   );
-// }
