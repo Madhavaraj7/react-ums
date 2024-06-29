@@ -1,4 +1,6 @@
 const Home = () => {
+  
+  
   return (
     <div className='px-4 py-12 max-w-2xl mx-auto text-center mt-10'>
       <h1 className='text-4xl font-extrabold mb-6 text-slate-800'>

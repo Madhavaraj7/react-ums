@@ -85,7 +85,7 @@ function Profile() {
     setLoading(true);
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ function Profile() {
 
   const handleSignOut = async () => {
     try {
-      await fetch('/api/auth/signout');
+      await fetch('http://localhost:3000/api/auth/signout');
       dispatch(signOut())
     } catch (error) {
       console.log(error);
