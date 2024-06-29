@@ -11,6 +11,10 @@ export const test = (req, res) => {
 // update user
 
 export const updateUser = async (req, res, next) => {
+  console.log("hello");
+  console.log("kkkkkkkk",req.user);
+  console.log("parms",req.params);
+
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "You can update only your account!"));
   }

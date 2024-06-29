@@ -45,6 +45,7 @@ const Login: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(values),
+        credentials:"include",
       });
   
       if (!res.ok) {
